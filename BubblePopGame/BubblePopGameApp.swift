@@ -11,7 +11,7 @@ import SwiftUI
 struct BubblePopGameApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(startGameViewModel: StartGameViewModel(), highScoreViewModel: HighScoreViewModel())
         }
     }
 }

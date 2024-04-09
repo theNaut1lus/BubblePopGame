@@ -8,17 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject var startGameViewModel: StartGameViewModel
+    @StateObject var highScoreViewModel: HighScoreViewModel
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView{
+            ZStack {
+                Rectangle()
+                    .fill(.titlePageBackground)
+                    .ignoresSafeArea()
+                VStack {
+                    Label("Bubble Pop", systemImage: "")
+                        .foregroundStyle(.regularMaterial)
+                        .fontWeight(.black)
+                        .font(.largeTitle)
+                    Spacer()
+                    NavigationLink(destination: SettingsView().environmentObject(startGameViewModel), label: {Text("New Game").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)})
+                        .padding(50)
+                    NavigationLink(destination: HighScoreView().environmentObject(highScoreViewModel), label: {Text("High Score").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)})
+                    Spacer()
+                }
+                .padding()
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(startGameViewModel: StartGameViewModel(), highScoreViewModel: HighScoreViewModel())
 }
