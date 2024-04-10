@@ -22,9 +22,16 @@ struct HighScoreView: View {
                     .foregroundStyle(.regularMaterial)
                 List {
                     ForEach(highScoreViewModel.HighScores) { highScore in
-                        Text("Result:  \(highScore.name)")
+                        Text("\(highScore.name): \(highScore.score)")
+                            .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                            .fontWeight(.black)
+                            .foregroundStyle(.mint)
                     }
+                    .scrollContentBackground(.hidden)
+                    .background(.clear)
                 }
+                .listStyle(.sidebar)
+                Spacer()
             }
         }
     }
