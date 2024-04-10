@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct ScoreDetail: Identifiable {
+    var id = UUID()
+    var name: String
+    var score: Int
+}
+
 class HighScoreViewModel: ObservableObject {
-    @Published var TaskDescription: String = ""
+    @Published var HighScores: [ScoreDetail] = []
 }

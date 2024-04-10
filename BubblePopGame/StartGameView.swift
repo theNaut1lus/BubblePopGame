@@ -14,7 +14,7 @@ struct StartGameView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .fill(.gray)
+                .fill(.titlePageBackground)
                 .ignoresSafeArea()
             VStack {
                 HStack {
@@ -30,36 +30,6 @@ struct StartGameView: View {
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                }
-                HStack {
-                    Button {
-                        print("Button Popped")
-                        bubble.toggle()
-                    } label: {
-                        Circle().fill(bubble ? Gradient(colors: [.red, .orange, .orange]) : Gradient(colors: [.clear]))
-                    }
-                    Circle().fill(.clear)
-                    Circle()
-                }
-                HStack {
-                    Circle()
-                    Circle()
-                    Circle()
-                }
-                HStack {
-                    Circle()
-                    Circle()
-                    Circle()
-                }
-                HStack {
-                    Circle()
-                    Circle()
-                    Circle()
-                }
-                HStack {
-                    Circle()
-                    Circle()
-                    Circle()
                 }
             }
         }

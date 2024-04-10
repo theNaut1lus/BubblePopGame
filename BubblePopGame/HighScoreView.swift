@@ -8,13 +8,21 @@
 import SwiftUI
 
 struct HighScoreView: View {
-    @State var highScoreViewModel: HighScoreViewModel = HighScoreViewModel()
+    @EnvironmentObject var highScoreViewModel: HighScoreViewModel
     
     var body: some View {
-        VStack {
-            Label("High Score View", systemImage: "")
-            List {
-                /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Content@*/Text("Content")/*@END_MENU_TOKEN@*/
+        ZStack {
+            Rectangle()
+                .fill(.titlePageBackground)
+                .ignoresSafeArea()
+            VStack {
+                Label("High Score View", systemImage: "")
+                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    .fontWeight(.black)
+                    .foregroundStyle(.regularMaterial)
+                List {
+                    
+                }
             }
         }
     }
