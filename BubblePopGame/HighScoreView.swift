@@ -21,7 +21,9 @@ struct HighScoreView: View {
                     .fontWeight(.black)
                     .foregroundStyle(.regularMaterial)
                 List {
-                    
+                    ForEach(highScoreViewModel.HighScores) { highScore in
+                        Text("Result:  \(highScore.name)")
+                    }
                 }
             }
         }
@@ -29,5 +31,5 @@ struct HighScoreView: View {
 }
 
 #Preview {
-    HighScoreView()
+    HighScoreView().environmentObject(HighScoreViewModel())
 }

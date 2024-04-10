@@ -14,5 +14,8 @@ struct ScoreDetail: Identifiable {
 }
 
 class HighScoreViewModel: ObservableObject {
-    @Published var HighScores: [ScoreDetail] = []
+    @Published var HighScores: [ScoreDetail] = [
+    ScoreDetail(name: "sample", score: 1),
+    ScoreDetail(name: "test", score: 10)
+    ]
 }
