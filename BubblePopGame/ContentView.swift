@@ -13,7 +13,7 @@ struct ContentView: View {
     @StateObject var highScoreViewModel: HighScoreViewModel
     
     var body: some View {
-        NavigationView{
+        NavigationStack{
             ZStack {
                 Rectangle()
                     .fill(.titlePageBackground)

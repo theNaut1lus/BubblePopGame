@@ -27,9 +27,9 @@ struct HighScoreView: View {
                             .fontWeight(.black)
                             .foregroundStyle(.mint)
                     }
-                    .scrollContentBackground(.hidden)
-                    .background(.clear)
                 }
+                .scrollContentBackground(.hidden)
+                .background(.clear)
                 .listStyle(.sidebar)
                 Spacer()
             }
