@@ -27,6 +27,8 @@ struct StartGameView: View {
     
     @EnvironmentObject var startGame : StartGameViewModel
     
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     
     var body: some View {
         ZStack {
@@ -50,6 +52,13 @@ struct StartGameView: View {
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .onReceive(timer, perform: { _ in
+                            if startGame.gameTime > 0 {
+                                startGame.gameTime -= 1
+                            }
+                                    
+                        })
+                    
                 }
                 Spacer()
                 ZStack {
