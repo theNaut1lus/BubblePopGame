@@ -28,14 +28,6 @@ struct Bubble: Identifiable, Equatable {
         ColorWeightValue(color: .black,score: 10,probability: 5)
     ]
     
-    //for any random color selection, no weight. not to be used.
-    
-    static func randomColorSelector() -> Color {
-        return Color(red: .random(in: 0...1),
-                     green: .random(in: 0...1),
-                     blue: .random(in: 0...1))
-    }
-    
     //logic to generate a weighted random color.
 
     static func weightedColor(input: [ColorWeightValue]) -> ColorWeightValue {
