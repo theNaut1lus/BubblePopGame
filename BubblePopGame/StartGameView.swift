@@ -95,8 +95,8 @@ struct StartGameView: View {
                             .position(bubble.position)
                             .onTapGesture {
                                 //pop bubble logic
-                                //on click: remove the bubble from the list, append score.
-                                //if previos bubble popped was same as this one, augment the score before popping.
+                                //on click: remove the bubble from the list, append score.?
+                                //if previous bubble popped was same as this one, augment the score before popping.
                             }
                     }
                 }
@@ -110,9 +110,10 @@ struct StartGameView: View {
 }
 
 //logic to start the game
-//logic to generate bubbles
+//logic to generate bubbles, from 1 to max value inputted from settings
 //logic to save score in highscoreviewmodel after timer expires
 //logic to reset to main content view after timer expires
+//logic to refresh bubbles every game second.
 
 #Preview {
     StartGameView().environmentObject(StartGameViewModel())
