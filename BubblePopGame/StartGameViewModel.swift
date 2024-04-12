@@ -9,7 +9,7 @@ import Foundation
 
 
 class StartGameViewModel : ObservableObject {
-    @Published var name: String = ""
+    @Published var name: String = "Name"
     @Published var gameTime: Double = 0
     @Published var numOfBubbles: Double = 0
     

@@ -7,9 +7,26 @@
 
 import SwiftUI
 
+struct Bubble: Identifiable, Equatable {
+    let id = UUID()
+    let position: CGPoint
+    let color: Color
+    let creationTime: Date
+    
+    static func randomColorSelector() -> Color {
+        return Color(red: .random(in: 0...1),
+                     green: .random(in: 0...1),
+                     blue: .random(in: 0...1))
+    }
+}
+
 struct StartGameView: View {
-    @State var bubble = true
+    @State private var bubbles = [Bubble]()
+    @State private var score = 0
+    let bubbleSize: CGFloat = 75
+    
     @EnvironmentObject var startGame : StartGameViewModel
+    
     
     var body: some View {
         ZStack {
@@ -19,17 +36,35 @@ struct StartGameView: View {
             VStack {
                 HStack {
                     Label(startGame.name, systemImage: "")
+                        .padding(.leading, 20.0)
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    Spacer()
                     Label(String(startGame.numOfBubbles), systemImage: "")
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(.title)
                     Label(String(startGame.gameTime), systemImage: "")
+                        .padding(.trailing, 20.0)
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                }
+                Spacer()
+                ZStack {
+                    ForEach(bubbles) {bubble in
+                        Circle()
+                            .foregroundStyle(bubble.color)
+                            .frame(width: bubbleSize, height: bubbleSize)
+                            .position(bubble.position)
+                            .onTapGesture {
+                                //pop bubble logic
+                            }
+                    }
+                }
+                .onAppear() {
+                    //start the game
                 }
             }
         }
