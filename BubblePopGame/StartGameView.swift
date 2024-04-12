@@ -10,15 +10,16 @@ import SwiftUI
 struct ColorWeightValue: Identifiable ,Equatable {
     let id = UUID()
     let color: Color
-    let score: Int
+    let score: Double
     let probability: Int
 }
 
 struct Bubble: Identifiable, Equatable {
     let id = UUID()
     let position: CGPoint
-    let color: Color
-    let scoreValue: Int
+//    let color: Color
+//    let scoreValue: Int
+    var colorWeightValue = ColorWeightValue(color: .brown, score: 100, probability: 0) //a default value that should never occur.
     let creationTime: Date
     let colorList: [ColorWeightValue] = [
         ColorWeightValue(color: .red,score: 1,probability: 40),
@@ -29,8 +30,15 @@ struct Bubble: Identifiable, Equatable {
     ]
     
     //logic to generate a weighted random color.
+    
+    init(position: CGPoint, creationTime: Date) {
+        self.position = position
+//        self.colorWeightValue = colorWeightValue
+        self.creationTime = creationTime
+        self.colorWeightValue = weightedColor(input: colorList)
+    }
 
-    static func weightedColor(input: [ColorWeightValue]) -> ColorWeightValue {
+    func weightedColor(input: [ColorWeightValue]) -> ColorWeightValue {
 
         let total = UInt32(input.map { $0.probability }.reduce(0, +))
         let rand = Int(arc4random_uniform(total))
@@ -49,10 +57,11 @@ struct Bubble: Identifiable, Equatable {
 
 struct StartGameView: View {
     @State private var bubbles = [Bubble]()
-    @State private var score = 0
+    @State private var prevBubble = Bubble(position: CGPoint(x: 0, y: 0), creationTime: Date())
+    @State private var score = 0.0
     let bubbleSize: CGFloat = 75
     
-    @EnvironmentObject var startGame : StartGameViewModel
+    @EnvironmentObject var startGameViewModel : StartGameViewModel
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -63,24 +72,29 @@ struct StartGameView: View {
                 .ignoresSafeArea()
             VStack {
                 HStack {
-                    Label(startGame.name, systemImage: "")
+                    Label(startGameViewModel.name, systemImage: "")
+                        .padding(.leading, 20.0)
+                        .foregroundStyle(.regularMaterial)
+                        .fontWeight(.black)
+                        .font(.title)
+                    Label(String(score), systemImage: "")
                         .padding(.leading, 20.0)
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(.title)
                     Spacer()
-                    Label(String(startGame.numOfBubbles), systemImage: "")
+                    Label(String(startGameViewModel.numOfBubbles), systemImage: "")
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(.title)
-                    Label(String(Int(startGame.gameTime)), systemImage: "")
+                    Label(String(Int(startGameViewModel.gameTime)), systemImage: "")
                         .padding(.trailing, 20.0)
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                         .onReceive(timer, perform: { _ in
-                            if startGame.gameTime > 0 {
-                                startGame.gameTime -= 1
+                            if startGameViewModel.gameTime > 0 {
+                                startGameViewModel.gameTime -= 1
                             }
                                     
                         })
@@ -90,30 +104,62 @@ struct StartGameView: View {
                 ZStack {
                     ForEach(bubbles) {bubble in
                         Circle()
-                            .foregroundStyle(bubble.color)
+                            .foregroundStyle(bubble.colorWeightValue.color)
                             .frame(width: bubbleSize, height: bubbleSize)
                             .position(bubble.position)
                             .onTapGesture {
                                 //pop bubble logic
-                                //on click: remove the bubble from the list, append score.?
-                                //if previous bubble popped was same as this one, augment the score before popping.
+                                popBubble(bubble, prevBubble)
                             }
                     }
                 }
-                .onAppear() {
-                    //start the game logic
-                    //generate bubbles into list after every 0.nth second?
-                }
+                .onReceive(timer, perform: { _ in
+                    if startGameViewModel.gameTime > 0 {
+                        generateBubble()
+                    }
+                    else {
+                        //logic to save score in highscoreviewmodel after timer expires
+                        //logic to reset to main content view after timer expires
+                        //logic to push to highscoreview after game timer ends and sending the name and final score to highscoreviewmodel for storing.
+                    }
+                })
             }
         }
     }
+    
+    //logic to generate bubbles, from 1 to max value inputted from settings
+    func generateBubble() {
+        let randomX = CGFloat.random(in: 0...(UIScreen.main.bounds.width - 3*(bubbleSize)))
+        let randomY = CGFloat.random(in: 0...(UIScreen.main.bounds.height - 3*(bubbleSize)))
+        let bubble = Bubble(position: CGPoint(x: randomX, y: randomY), creationTime: Date())
+        bubbles.append(bubble)
+        
+        //logic to refresh bubbles after max number is reached as entered by the user
+        DispatchQueue.main.asyncAfter(deadline: .now() + startGameViewModel.numOfBubbles) {
+            //remove bubble
+            removeBubble(bubble)
+        }
+    }
+    
+    func removeBubble(_ bubble: Bubble) {
+        if let index = bubbles.firstIndex(of: bubble) {
+            bubbles.remove(at: index)
+        }
+    }
+    
+    func popBubble(_ bubble: Bubble, _ previousBubble: Bubble) {
+        var bubbleScore = bubble.colorWeightValue.score
+        //if previous bubble popped was same as this one, augment the score before popping.
+        if prevBubble.colorWeightValue.color == bubble.colorWeightValue.color {
+            bubbleScore = 1.5*bubble.colorWeightValue.score
+        }
+        if let index = bubbles.firstIndex(of: bubble) {
+            bubbles.remove(at: index)
+            score += bubbleScore
+        }
+        prevBubble = bubble
+    }
 }
-
-//logic to start the game
-//logic to generate bubbles, from 1 to max value inputted from settings
-//logic to save score in highscoreviewmodel after timer expires
-//logic to reset to main content view after timer expires
-//logic to refresh bubbles every game second.
 
 #Preview {
     StartGameView().environmentObject(StartGameViewModel())
