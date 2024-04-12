@@ -19,3 +19,5 @@ class HighScoreViewModel: ObservableObject {
     ScoreDetail(name: "test", score: 10)
     ]
 }
+
+//use swift data here to persist the names and highscore

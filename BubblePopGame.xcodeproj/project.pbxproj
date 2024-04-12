@@ -17,6 +17,8 @@
 		171EDD8D2BBBCB2E008A2F23 /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171EDD8C2BBBCB2E008A2F23 /* StartGameView.swift */; };
 		171EDDAF2BC521C9008A2F23 /* HighScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171EDDAE2BC521C9008A2F23 /* HighScoreModel.swift */; };
 		171EDDB12BC52489008A2F23 /* StartGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171EDDB02BC52489008A2F23 /* StartGameViewModel.swift */; };
+		171EDDCF2BC9546F008A2F23 /* ColorWeightValueModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171EDDCE2BC9546F008A2F23 /* ColorWeightValueModel.swift */; };
+		171EDDD12BC954AA008A2F23 /* BubbleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171EDDD02BC954AA008A2F23 /* BubbleModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		171EDD8C2BBBCB2E008A2F23 /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
 		171EDDAE2BC521C9008A2F23 /* HighScoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighScoreModel.swift; sourceTree = "<group>"; };
 		171EDDB02BC52489008A2F23 /* StartGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameViewModel.swift; sourceTree = "<group>"; };
+		171EDDCE2BC9546F008A2F23 /* ColorWeightValueModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorWeightValueModel.swift; sourceTree = "<group>"; };
+		171EDDD02BC954AA008A2F23 /* BubbleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +73,10 @@
 				171EDD862BBBC426008A2F23 /* HighScoreView.swift */,
 				171EDD8C2BBBCB2E008A2F23 /* StartGameView.swift */,
 				171EDD8A2BBBC8A6008A2F23 /* HighScoreViewModel.swift */,
+				171EDDD02BC954AA008A2F23 /* BubbleModel.swift */,
 				171EDDB02BC52489008A2F23 /* StartGameViewModel.swift */,
 				171EDD842BBBC3F6008A2F23 /* SettingsView.swift */,
+				171EDDCE2BC9546F008A2F23 /* ColorWeightValueModel.swift */,
 				171EDD7A2BBBBFE0008A2F23 /* Assets.xcassets */,
 				171EDD7C2BBBBFE0008A2F23 /* Preview Content */,
 			);
@@ -158,9 +164,11 @@
 				171EDD8B2BBBC8A6008A2F23 /* HighScoreViewModel.swift in Sources */,
 				171EDD8D2BBBCB2E008A2F23 /* StartGameView.swift in Sources */,
 				171EDDAF2BC521C9008A2F23 /* HighScoreModel.swift in Sources */,
+				171EDDCF2BC9546F008A2F23 /* ColorWeightValueModel.swift in Sources */,
 				171EDD852BBBC3F6008A2F23 /* SettingsView.swift in Sources */,
 				171EDD872BBBC426008A2F23 /* HighScoreView.swift in Sources */,
 				171EDD792BBBBFDD008A2F23 /* ContentView.swift in Sources */,
+				171EDDD12BC954AA008A2F23 /* BubbleModel.swift in Sources */,
 				171EDD772BBBBFDD008A2F23 /* BubblePopGameApp.swift in Sources */,
 				171EDDB12BC52489008A2F23 /* StartGameViewModel.swift in Sources */,
 			);

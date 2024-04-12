@@ -37,6 +37,9 @@ struct HighScoreView: View {
     }
 }
 
+//fetch data from highscoreviewmodel using swift UI
+//sort by highest score.
+
 #Preview {
     HighScoreView().environmentObject(HighScoreViewModel())
 }
