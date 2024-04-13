@@ -10,6 +10,7 @@ import SwiftUI
 struct SettingsView: View {
     
     @EnvironmentObject var startGameViewModel : StartGameViewModel
+    @EnvironmentObject var highScoreViewModel : HighScoreViewModel
     
     var body: some View {
         ZStack{
@@ -47,7 +48,9 @@ struct SettingsView: View {
                     .padding(.horizontal, 20.0)
                 Text("\(Int(startGameViewModel.numOfBubbles))")
                     .padding()
-                NavigationLink(destination: StartGameView().environmentObject(startGameViewModel), label: {Text("Start Game!").font(.title)})
+                NavigationLink(destination: StartGameView()
+                    .environmentObject(highScoreViewModel)
+                    .environmentObject(startGameViewModel), label: {Text("Start Game!").font(.title)})
                 
             }
             
@@ -56,5 +59,7 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView().environmentObject(StartGameViewModel())
+    SettingsView()
+        .environmentObject(StartGameViewModel())
+        .environmentObject(HighScoreViewModel())
 }

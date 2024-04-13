@@ -13,7 +13,11 @@ struct StartGameView: View {
     @State private var score = 0.0
     let bubbleSize: CGFloat = 75
     
+    //game settings environment variables
     @EnvironmentObject var startGameViewModel : StartGameViewModel
+    @EnvironmentObject var highScoreViewModel : HighScoreViewModel
+
+    @State var shouldNavigate = false
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -70,11 +74,19 @@ struct StartGameView: View {
                         generateBubble()
                     }
                     else {
-                        //logic to save score in highscoreviewmodel after timer expires
-                        //logic to reset to main content view after timer expires
+                        //game ended: save name and score to highScoreViewModel
+                        highScoreViewModel.name = startGameViewModel.name
+                        highScoreViewModel.score = score
                         //logic to push to highscoreview after game timer ends and sending the name and final score to highscoreviewmodel for storing.
+                        shouldNavigate.toggle()
+                        
                     }
                 })
+                Spacer()
+                NavigationLink(destination: HighScoreView()
+                    .environmentObject(highScoreViewModel)
+                    .environmentObject(startGameViewModel)
+                    .modelContainer(for: HighScoreList.self, inMemory: true), label: {Text("View High Scores")})
             }
         }
     }
@@ -117,5 +129,7 @@ struct StartGameView: View {
 
 
 #Preview {
-    StartGameView().environmentObject(StartGameViewModel())
+    StartGameView()
+        .environmentObject(StartGameViewModel())
+        .environmentObject(HighScoreViewModel())
 }

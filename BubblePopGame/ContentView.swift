@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var startGameViewModel: StartGameViewModel
+    @StateObject var highScoreViewModel: HighScoreViewModel
     
     var body: some View {
         NavigationStack{
@@ -26,9 +27,14 @@ struct ContentView: View {
                     Image(systemName: "soccerball.circle")
                         .aspectRatio(contentMode: .fill)
                         .animation(/*@START_MENU_TOKEN@*/.easeIn/*@END_MENU_TOKEN@*/, value: 4)
-                    NavigationLink(destination: SettingsView().environmentObject(startGameViewModel), label: {Text("New Game").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)})
+                    NavigationLink(destination: SettingsView()
+                        .environmentObject(startGameViewModel)
+                        .environmentObject(highScoreViewModel), label: {Text("New Game").font(.title)})
                         .padding(50)
-                    NavigationLink(destination: HighScoreView(), label: {Text("High Score").font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)})
+                    NavigationLink(destination: HighScoreView()
+                        .environmentObject(startGameViewModel)
+                        .environmentObject(highScoreViewModel)
+                        .modelContainer(for: HighScoreList.self, inMemory: true), label: {Text("High Score").font(.title)})
                     Spacer()
                     Label("Made by: Sid Aulakh", systemImage: "")
                         .foregroundStyle(.regularMaterial)
@@ -42,5 +48,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(startGameViewModel: StartGameViewModel())
+    ContentView(startGameViewModel: StartGameViewModel(), highScoreViewModel: HighScoreViewModel())
 }
