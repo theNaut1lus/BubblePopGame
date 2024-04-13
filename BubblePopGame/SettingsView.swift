@@ -11,8 +11,6 @@ struct SettingsView: View {
     
     @EnvironmentObject var startGameViewModel : StartGameViewModel
     
-    @EnvironmentObject var highScoreViewModel: HighScoreViewModel
-    
     var body: some View {
         ZStack{
             Rectangle()

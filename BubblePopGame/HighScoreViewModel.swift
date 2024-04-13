@@ -6,18 +6,19 @@
 //
 
 import Foundation
+import SwiftData
 
-struct ScoreDetail: Identifiable {
+@Model
+final class HighScoreViewModel {
     var id = UUID()
-    var name: String
-    var score: Int
+    var name: String = ""
+    var score: Double = 0.0
+    
+    init(name: String = "", score: Double = 0.0) {
+        self.name = name
+        self.score = score
+    }
 }
 
-class HighScoreViewModel: ObservableObject {
-    @Published var HighScores: [ScoreDetail] = [
-    ScoreDetail(name: "sample", score: 1),
-    ScoreDetail(name: "test", score: 10)
-    ]
-}
 
 //use swift data here to persist the names and highscore
