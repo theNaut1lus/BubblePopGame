@@ -43,7 +43,7 @@ struct StartGameView: View {
                         .padding(.trailing, 20.0)
                         .foregroundStyle(.regularMaterial)
                         .fontWeight(.black)
-                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .font(.title)
                         .onReceive(timer, perform: { _ in
                             if startGameViewModel.gameTime > 0 {
                                 startGameViewModel.gameTime -= 1
@@ -86,7 +86,7 @@ struct StartGameView: View {
         let bubble = Bubble(position: CGPoint(x: randomX, y: randomY), creationTime: Date())
         bubbles.append(bubble)
         
-        //logic to refresh bubbles after max number is reached as entered by the user
+        //logic to remove bubbles after max number is reached as entered by the user
         DispatchQueue.main.asyncAfter(deadline: .now() + startGameViewModel.numOfBubbles) {
             //remove bubble
             removeBubble(bubble)

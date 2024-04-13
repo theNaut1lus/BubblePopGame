@@ -12,7 +12,7 @@ struct Bubble: Identifiable, Equatable {
     let position: CGPoint
 //    let color: Color
 //    let scoreValue: Int
-    var colorWeightValue = ColorWeightValue(color: .brown, score: 100, probability: 0) //a default value that should never occur.
+    var colorWeightValue = ColorWeightValue(color: .brown, score: 0, probability: 0) //a default value that should never occur.
     let creationTime: Date
     let colorList: [ColorWeightValue] = [
         ColorWeightValue(color: .red,score: 1,probability: 40),
@@ -22,15 +22,16 @@ struct Bubble: Identifiable, Equatable {
         ColorWeightValue(color: .black,score: 10,probability: 5)
     ]
     
-    //logic to generate a weighted random color.
-    
+
+    //init to assign weighted values to the bubble when creating a bubble object
     init(position: CGPoint, creationTime: Date) {
         self.position = position
 //        self.colorWeightValue = colorWeightValue
         self.creationTime = creationTime
         self.colorWeightValue = weightedColor(input: colorList)
     }
-
+    
+    //logic to generate a weighted random color.
     func weightedColor(input: [ColorWeightValue]) -> ColorWeightValue {
 
         let total = UInt32(input.map { $0.probability }.reduce(0, +))
