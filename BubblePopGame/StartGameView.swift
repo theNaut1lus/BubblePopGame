@@ -93,8 +93,8 @@ struct StartGameView: View {
     
     //logic to generate bubbles, from 1 to max value inputted from settings
     func generateBubble() {
-        let randomX = CGFloat.random(in: 0...(UIScreen.main.bounds.width - 3*(bubbleSize)))
-        let randomY = CGFloat.random(in: 0...(UIScreen.main.bounds.height - 3*(bubbleSize)))
+        let randomX = CGFloat.random(in: 0...(UIScreen.main.bounds.width - (bubbleSize)))
+        let randomY = CGFloat.random(in: 0...(UIScreen.main.bounds.height - (bubbleSize)))
         let bubble = Bubble(position: CGPoint(x: randomX, y: randomY), creationTime: Date())
         bubbles.append(bubble)
         
