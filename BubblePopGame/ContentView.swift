@@ -31,7 +31,7 @@ struct ContentView: View {
                     NavigationLink(destination: SettingsView()
                         .environmentObject(startGameViewModel)
                         .environmentObject(highScoreViewModel), label: {Text("New Game").font(.title)})
-                        .padding(50)
+                        .padding(10)
                     NavigationLink(destination: HighScoreView()
                         .environmentObject(startGameViewModel)
                         .environmentObject(highScoreViewModel)
