@@ -13,7 +13,7 @@ struct HighScoreView: View {
     @EnvironmentObject var highScoreViewModel : HighScoreViewModel
     
     @Environment(\.modelContext) private var modelContext
-    @Query private var highScores: [HighScoreList]
+    @Query(sort: \HighScoreList.score, order: .reverse) private var highScores: [HighScoreList]
     
     @State var name: String = ""
     @State var score: String = ""

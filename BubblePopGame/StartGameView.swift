@@ -12,7 +12,13 @@ struct StartGameView: View {
     @State private var bubbles = [Bubble]()
     @State private var prevBubble = Bubble(position: CGPoint(x: 0, y: 0), creationTime: Date())
     @State private var score = 0.0
-    let bubbleSize: CGFloat = 75
+    let bubbleSize: CGFloat = 50
+    
+    //to animate the timer
+    @State private var progress = 1.0
+    
+    //To display the highest score at the bottom
+    @Query(sort: \HighScoreList.score, order: .reverse) private var highScores: [HighScoreList]
     
     //game settings environment variables
     @EnvironmentObject var startGameViewModel : StartGameViewModel
@@ -27,6 +33,7 @@ struct StartGameView: View {
             Rectangle()
                 .fill(.titlePageBackground)
                 .ignoresSafeArea()
+            
             VStack {
                 HStack {
                     Label(startGameViewModel.name, systemImage: "")
@@ -40,21 +47,25 @@ struct StartGameView: View {
                         .fontWeight(.black)
                         .font(.title)
                     Spacer()
-                    Label(String(startGameViewModel.numOfBubbles), systemImage: "")
-                        .foregroundStyle(.regularMaterial)
-                        .fontWeight(.black)
-                        .font(.title)
-                    Label(String(Int(startGameViewModel.gameTime)), systemImage: "")
-                        .padding(.trailing, 20.0)
-                        .foregroundStyle(.regularMaterial)
-                        .fontWeight(.black)
-                        .font(.title)
-                        .onReceive(timer, perform: { _ in
-                            if startGameViewModel.gameTime > 0 {
-                                startGameViewModel.gameTime -= 1
-                            }
-                                    
-                        })
+                    ZStack {
+                        Circle()
+                            .trim(from: 0, to: progress)
+                            .stroke(Color.pink, lineWidth: 2)
+                            .padding(.trailing, 10.0)
+                            .frame(width: 70, height: 70)
+                        Label(String(Int(startGameViewModel.gameTime)), systemImage: "")
+                            .padding(.trailing, 20.0)
+                            .foregroundStyle(.regularMaterial)
+                            .fontWeight(.black)
+                            .font(.title)
+                            .onReceive(timer, perform: { _ in
+                                if startGameViewModel.gameTime > 0 {
+                                    startGameViewModel.gameTime -= 1
+                                    progress = progress - progress/startGameViewModel.gameTime
+                                }
+                                
+                            })
+                    }
                     
                 }
                 Spacer()
@@ -64,6 +75,11 @@ struct StartGameView: View {
                             .foregroundStyle(bubble.colorWeightValue.color)
                             .frame(width: bubbleSize, height: bubbleSize)
                             .position(bubble.position)
+                            .onAppear{
+                                withAnimation(.easeInOut.repeatForever(autoreverses: true)) {
+                                    // do some pulsing animation
+                                }
+                            }
                             .onTapGesture {
                                 //pop bubble logic
                                 popBubble(bubble, prevBubble)
@@ -71,7 +87,7 @@ struct StartGameView: View {
                     }
                 }
                 .onReceive(timer, perform: { _ in
-                    if startGameViewModel.gameTime > 0 {
+                    if startGameViewModel.gameTime > startGameViewModel.numOfBubbles {
                         generateBubble()
                     }
                     else {
@@ -84,6 +100,24 @@ struct StartGameView: View {
                     }
                 })
                 Spacer()
+                HStack {
+                    VStack {
+                        Text("Current High Score")
+                            .foregroundStyle(.regularMaterial)
+                            .fontWeight(.black)
+                            .font(.subheadline)
+                        HStack {
+                            Text(String(highScores.first?.name ?? "name"))
+                                .foregroundStyle(.regularMaterial)
+                                .fontWeight(.semibold)
+                                .font(.footnote)
+                            Text(String(highScores.first?.score ?? 0.0))
+                                .foregroundStyle(.regularMaterial)
+                                .fontWeight(.semibold)
+                                .font(.footnote)
+                        }
+                    }
+                }
                 NavigationLink(destination: HighScoreView()
                     .environmentObject(highScoreViewModel)
                     .environmentObject(startGameViewModel), label: {Text("View High Scores")})
@@ -92,8 +126,10 @@ struct StartGameView: View {
     }
     
     //logic to generate bubbles, from 1 to max value inputted from settings
+    //TODO: fix overlap of bubbles
     func generateBubble() {
-        let randomX = CGFloat.random(in: 2*bubbleSize...(UIScreen.main.bounds.width - 2*(bubbleSize)))
+        
+        let randomX = CGFloat.random(in: bubbleSize...(UIScreen.main.bounds.width - (bubbleSize)))
         let randomY = CGFloat.random(in: 2*bubbleSize...(UIScreen.main.bounds.height - 2*(bubbleSize)))
         let bubble = Bubble(position: CGPoint(x: randomX, y: randomY), creationTime: Date())
         bubbles.append(bubble)

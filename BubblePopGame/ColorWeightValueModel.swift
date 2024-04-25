@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ColorWeightValue: Identifiable ,Equatable {
     let id = UUID()
-    let color: Color
+    var color: Color
     let score: Double
     let probability: Int
 }
