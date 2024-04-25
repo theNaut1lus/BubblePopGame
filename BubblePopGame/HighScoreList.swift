@@ -8,6 +8,8 @@
 import Foundation
 import SwiftData
 
+//use swift data hobject to persist the names and highscore into model list
+
 @Model
 final class HighScoreList {
     var id = UUID()
@@ -19,5 +21,3 @@ final class HighScoreList {
         self.score = score
     }
 }
-
-//use swift data here to persist the names and highscore

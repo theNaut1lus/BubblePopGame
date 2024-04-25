@@ -10,7 +10,7 @@ import SwiftData
 
 @main
 struct BubblePopGameApp: App {
-    
+    //get swift data working
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             HighScoreList.self

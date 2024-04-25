@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    //game settings and high score environment variables
     @EnvironmentObject var startGameViewModel : StartGameViewModel
     @EnvironmentObject var highScoreViewModel : HighScoreViewModel
     

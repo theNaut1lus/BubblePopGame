@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+//struct to store the color, probability weight and score of the bubble
+
 struct ColorWeightValue: Identifiable ,Equatable {
     let id = UUID()
     var color: Color

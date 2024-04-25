@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     
+    //defined the 2 env variables used by the entire nav stack
     @StateObject var startGameViewModel: StartGameViewModel
     @StateObject var highScoreViewModel: HighScoreViewModel
     
@@ -28,10 +29,12 @@ struct ContentView: View {
                     Image(.bubble)
                         .aspectRatio(contentMode: .fill)
                         .animation(/*@START_MENU_TOKEN@*/.easeIn/*@END_MENU_TOKEN@*/, value: 4)
+                    //Navigation to game settings view
                     NavigationLink(destination: SettingsView()
                         .environmentObject(startGameViewModel)
                         .environmentObject(highScoreViewModel), label: {Text("New Game").font(.title)})
                         .padding(10)
+                    //Direct navigation to high score view
                     NavigationLink(destination: HighScoreView()
                         .environmentObject(startGameViewModel)
                         .environmentObject(highScoreViewModel)
@@ -48,6 +51,7 @@ struct ContentView: View {
     }
 }
 
+//to make preview behave well with with Swift Data
 #Preview {
     let container = try! ModelContainer(for: HighScoreList.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     let context = container.mainContext

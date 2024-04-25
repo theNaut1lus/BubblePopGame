@@ -10,13 +10,12 @@ import SwiftData
 
 struct HighScoreView: View {
     
+    //Grabs the highscoreviewmodel env variable
     @EnvironmentObject var highScoreViewModel : HighScoreViewModel
     
+    //initialise swift data model and grab stored highscore list
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \HighScoreList.score, order: .reverse) private var highScores: [HighScoreList]
-    
-    @State var name: String = ""
-    @State var score: String = ""
     
     var body: some View {
         ZStack {
@@ -28,6 +27,7 @@ struct HighScoreView: View {
                     .font(.title)
                     .fontWeight(.black)
                     .foregroundStyle(.regularMaterial)
+                //Swift Data list for high scores
                  NavigationStack {
                     List {
                         ForEach(highScores) {highScore in
@@ -47,12 +47,14 @@ struct HighScoreView: View {
             }
         }
         .onAppear() {
+            //When navigating to this view from game view, then we will need to add the highscore to list.
             addToList(highScoreViewModel: highScoreViewModel)
         }
         .padding()
     }
     
     func addToList(highScoreViewModel: HighScoreViewModel) {
+        //scenario where highscore view is reached directly from the main view
         if highScoreViewModel.name == "" {
             //do nothing, empty env object.
             return
@@ -69,6 +71,7 @@ struct HighScoreView: View {
     }
 }
 
+//to make preview behave well with with Swift Data
 #Preview {
     
     let container = try! ModelContainer(for: HighScoreList.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))

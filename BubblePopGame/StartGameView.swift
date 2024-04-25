@@ -9,23 +9,33 @@ import SwiftUI
 import SwiftData
 
 struct StartGameView: View {
+    
+    //list of active bubbles at any time during the entire game state
     @State private var bubbles = [Bubble]()
+    
+    //saves the last bubble popped for score augmentation if consecutive tap
     @State private var prevBubble = Bubble(position: CGPoint(x: 0, y: 0), creationTime: Date())
+    
+    //maintain game score
     @State private var score = 0.0
+    
+    //bubble size to create the circle object
     let bubbleSize: CGFloat = 50
     
-    //to animate the timer
+    //to animate the timer bar
     @State private var progress = 1.0
     
     //To display the highest score at the bottom
     @Query(sort: \HighScoreList.score, order: .reverse) private var highScores: [HighScoreList]
     
-    //game settings environment variables
+    //game settings and high score environment variables
     @EnvironmentObject var startGameViewModel : StartGameViewModel
     @EnvironmentObject var highScoreViewModel : HighScoreViewModel
-
+    
+    //to activate the high score view navigation after game ends.
     @State var shouldNavigate = false
     
+    //main timer that controls game clock, bubble generation, high score finalisation.
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
@@ -84,6 +94,7 @@ struct StartGameView: View {
                 }
                 Spacer()
                 ZStack {
+                    //Bubbles created here in this forearch using the bubbles state list.
                     ForEach(bubbles) {bubble in
                         Circle()
                             .foregroundStyle(bubble.colorWeightValue.color)
@@ -95,12 +106,13 @@ struct StartGameView: View {
                                 }
                             }
                             .onTapGesture {
-                                //pop bubble logic
+                                //pop bubble on tap and do necessary calculations
                                 popBubble(bubble, prevBubble)
                             }
                     }
                 }
                 .onReceive(timer, perform: { _ in
+                    //start the game, run timer, generate bubbles
                     if startGameViewModel.gameTime > startGameViewModel.numOfBubbles {
                         generateBubble()
                     }
@@ -108,12 +120,12 @@ struct StartGameView: View {
                         //game ended: save name and score to highScoreViewModel
                         highScoreViewModel.name = startGameViewModel.name
                         highScoreViewModel.score = score
-                        //logic to push to highscoreview after game timer ends and sending the name and final score to highscoreviewmodel for storing.
                     }
                 })
                 Spacer()
                 HStack {
                     VStack {
+                        //Display the highes score in swift data highscore listS
                         Text("Current High Score")
                             .foregroundStyle(.regularMaterial)
                             .fontWeight(.black)
@@ -141,7 +153,6 @@ struct StartGameView: View {
     }
     
     //logic to generate bubbles, from 1 to max value inputted from settings
-    //TODO: fix overlap of bubbles
     func generateBubble() {
         
         let randomX = CGFloat.random(in: 2*bubbleSize...(UIScreen.main.bounds.width - 2*(bubbleSize)))
@@ -149,19 +160,21 @@ struct StartGameView: View {
         let bubble = Bubble(position: CGPoint(x: randomX, y: randomY), creationTime: Date())
         bubbles.append(bubble)
         
-        //logic to remove bubbles after max number is reached as entered by the user
+        //Remove bubbles from bubble array if max number is reached as entered by the user
         DispatchQueue.main.asyncAfter(deadline: .now() + startGameViewModel.numOfBubbles) {
             //remove bubble
             removeBubble(bubble)
         }
     }
     
+    //this function removes the bubble when it expires, no user tap.
     func removeBubble(_ bubble: Bubble) {
         if let index = bubbles.firstIndex(of: bubble) {
             bubbles.remove(at: index)
         }
     }
     
+    //this function removes the bubble on user tap, performs all necessary calculations.
     func popBubble(_ bubble: Bubble, _ previousBubble: Bubble) {
         var bubbleScore = bubble.colorWeightValue.score
         //if previous bubble popped was same as this one, augment the score before popping.
@@ -176,9 +189,7 @@ struct StartGameView: View {
     }
 }
 
-//use swift data to persist game highscore and name
-
-
+//to make preview behave well with with Swift Data
 #Preview {
     let container = try! ModelContainer(for: HighScoreList.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     let context = container.mainContext
