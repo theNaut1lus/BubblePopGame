@@ -72,6 +72,10 @@ struct StartGameView: View {
                                     startGameViewModel.gameTime -= 1
                                     progress = progress - progress/startGameViewModel.gameTime
                                 }
+                                else {
+                                    timer.upstream.connect().cancel()
+                                    shouldNavigate = true
+                                }
                                 
                             })
                     }
@@ -105,8 +109,6 @@ struct StartGameView: View {
                         highScoreViewModel.name = startGameViewModel.name
                         highScoreViewModel.score = score
                         //logic to push to highscoreview after game timer ends and sending the name and final score to highscoreviewmodel for storing.
-                        shouldNavigate.toggle()
-                        
                     }
                 })
                 Spacer()
@@ -127,10 +129,13 @@ struct StartGameView: View {
                                 .font(.footnote)
                         }
                     }
+                    Spacer()
                     NavigationLink(destination: HighScoreView()
                         .environmentObject(highScoreViewModel)
                         .environmentObject(startGameViewModel), label: {Text("View High Scores")})
+                    .disabled(!shouldNavigate)
                 }
+                .padding(20)
             }
         }
     }
@@ -139,8 +144,8 @@ struct StartGameView: View {
     //TODO: fix overlap of bubbles
     func generateBubble() {
         
-        let randomX = CGFloat.random(in: bubbleSize...(UIScreen.main.bounds.width - (bubbleSize)))
-        let randomY = CGFloat.random(in: 2*bubbleSize...(UIScreen.main.bounds.height - 2*(bubbleSize)))
+        let randomX = CGFloat.random(in: 2*bubbleSize...(UIScreen.main.bounds.width - 2*(bubbleSize)))
+        let randomY = CGFloat.random(in: 3*bubbleSize...(UIScreen.main.bounds.height - 2*(bubbleSize)))
         let bubble = Bubble(position: CGPoint(x: randomX, y: randomY), creationTime: Date())
         bubbles.append(bubble)
         

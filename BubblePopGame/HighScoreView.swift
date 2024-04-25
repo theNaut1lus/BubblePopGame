@@ -80,6 +80,9 @@ struct HighScoreView: View {
         else {
             print("Env object: \(highScoreViewModel.id)  : \(highScoreViewModel.name) : \(highScoreViewModel.score)")
             modelContext.insert(HighScoreList(name: highScoreViewModel.name, score: highScoreViewModel.score))
+            //reset the highScoreViewModel env object
+            highScoreViewModel.name = ""
+            highScoreViewModel.score = 0.0
         }
         
     }

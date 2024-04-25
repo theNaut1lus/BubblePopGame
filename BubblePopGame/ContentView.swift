@@ -25,7 +25,7 @@ struct ContentView: View {
                         .fontWeight(.black)
                         .font(.largeTitle)
                     Spacer()
-                    Image(systemName: "soccerball.circle")
+                    Image(.bubble)
                         .aspectRatio(contentMode: .fill)
                         .animation(/*@START_MENU_TOKEN@*/.easeIn/*@END_MENU_TOKEN@*/, value: 4)
                     NavigationLink(destination: SettingsView()
