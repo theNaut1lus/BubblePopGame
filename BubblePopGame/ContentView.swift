@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     
@@ -34,7 +35,7 @@ struct ContentView: View {
                     NavigationLink(destination: HighScoreView()
                         .environmentObject(startGameViewModel)
                         .environmentObject(highScoreViewModel)
-                        .modelContainer(for: HighScoreList.self, inMemory: true), label: {Text("High Score").font(.title)})
+                    , label: {Text("High Score").font(.title)})
                     Spacer()
                     Label("Made by: Sid Aulakh", systemImage: "")
                         .foregroundStyle(.regularMaterial)
@@ -48,5 +49,13 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(startGameViewModel: StartGameViewModel(), highScoreViewModel: HighScoreViewModel())
+    let container = try! ModelContainer(for: HighScoreList.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let context = container.mainContext
+    
+    let model = HighScoreList(name: "Sid", score: 832)
+    context.insert(model)
+    try! context.save()
+        
+    return ContentView(startGameViewModel: StartGameViewModel(), highScoreViewModel: HighScoreViewModel())
+        .modelContainer(container)
 }

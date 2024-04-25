@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StartGameView: View {
     @State private var bubbles = [Bubble]()
@@ -85,16 +86,15 @@ struct StartGameView: View {
                 Spacer()
                 NavigationLink(destination: HighScoreView()
                     .environmentObject(highScoreViewModel)
-                    .environmentObject(startGameViewModel)
-                    .modelContainer(for: HighScoreList.self, inMemory: true), label: {Text("View High Scores")})
+                    .environmentObject(startGameViewModel), label: {Text("View High Scores")})
             }
         }
     }
     
     //logic to generate bubbles, from 1 to max value inputted from settings
     func generateBubble() {
-        let randomX = CGFloat.random(in: 0...(UIScreen.main.bounds.width - (bubbleSize)))
-        let randomY = CGFloat.random(in: 0...(UIScreen.main.bounds.height - (bubbleSize)))
+        let randomX = CGFloat.random(in: 2*bubbleSize...(UIScreen.main.bounds.width - 2*(bubbleSize)))
+        let randomY = CGFloat.random(in: 2*bubbleSize...(UIScreen.main.bounds.height - 2*(bubbleSize)))
         let bubble = Bubble(position: CGPoint(x: randomX, y: randomY), creationTime: Date())
         bubbles.append(bubble)
         
@@ -129,7 +129,14 @@ struct StartGameView: View {
 
 
 #Preview {
-    StartGameView()
+    let container = try! ModelContainer(for: HighScoreList.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let context = container.mainContext
+    
+    let model = HighScoreList(name: "Sid", score: 832)
+    context.insert(model)
+    try! context.save()
+    return StartGameView()
         .environmentObject(StartGameViewModel())
         .environmentObject(HighScoreViewModel())
+        .modelContainer(container)
 }

@@ -96,8 +96,16 @@ struct editView: View {
 //sort by highest score.
 
 #Preview {
-    HighScoreView()
+    
+    let container = try! ModelContainer(for: HighScoreList.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let context = container.mainContext
+    
+    let model = HighScoreList(name: "Sid", score: 832)
+    context.insert(model)
+    try! context.save()
+        
+    return HighScoreView()
         .environmentObject(HighScoreViewModel())
         .environmentObject(StartGameViewModel())
-        .modelContainer(for: HighScoreList.self, inMemory: true)
+        .modelContainer(container)
 }
