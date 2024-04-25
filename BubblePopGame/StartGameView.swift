@@ -36,25 +36,34 @@ struct StartGameView: View {
             
             VStack {
                 HStack {
-                    Label(startGameViewModel.name, systemImage: "")
-                        .padding(.leading, 20.0)
-                        .foregroundStyle(.regularMaterial)
-                        .fontWeight(.black)
-                        .font(.title)
-                    Label(String(score), systemImage: "")
-                        .padding(.leading, 20.0)
-                        .foregroundStyle(.regularMaterial)
-                        .fontWeight(.black)
-                        .font(.title)
+                    VStack {
+                        Text("Player")
+                            .fontWeight(.heavy)
+                            .foregroundStyle(.link)
+                        Label(startGameViewModel.name, systemImage: "")
+                            .foregroundStyle(.regularMaterial)
+                            .fontWeight(.black)
+                            .font(.title)
+                    }
+                    .padding(.leading, 20.0)
+                    VStack {
+                        Text("Score")
+                            .fontWeight(.heavy)
+                            .foregroundStyle(.link)
+                        Label(String(score), systemImage: "")
+                            .foregroundStyle(.regularMaterial)
+                            .fontWeight(.black)
+                            .font(.title)
+                    }
+                    .padding(.leading, 20.0)
                     Spacer()
                     ZStack {
                         Circle()
                             .trim(from: 0, to: progress)
                             .stroke(Color.pink, lineWidth: 2)
-                            .padding(.trailing, 10.0)
                             .frame(width: 70, height: 70)
+                            .padding(.leading, 5.0)
                         Label(String(Int(startGameViewModel.gameTime)), systemImage: "")
-                            .padding(.trailing, 20.0)
                             .foregroundStyle(.regularMaterial)
                             .fontWeight(.black)
                             .font(.title)
@@ -66,6 +75,7 @@ struct StartGameView: View {
                                 
                             })
                     }
+                    .padding(.trailing, 20.0)
                     
                 }
                 Spacer()
@@ -117,10 +127,10 @@ struct StartGameView: View {
                                 .font(.footnote)
                         }
                     }
+                    NavigationLink(destination: HighScoreView()
+                        .environmentObject(highScoreViewModel)
+                        .environmentObject(startGameViewModel), label: {Text("View High Scores")})
                 }
-                NavigationLink(destination: HighScoreView()
-                    .environmentObject(highScoreViewModel)
-                    .environmentObject(startGameViewModel), label: {Text("View High Scores")})
             }
         }
     }
